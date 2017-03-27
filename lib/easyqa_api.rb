@@ -1,5 +1,5 @@
-require "easyqa_api/version"
-
-module EasyqaApi
-  # Your code goes here...
-end
+require 'easyqa_api/version'
+require 'easyqa_api/configuration'
+require 'easyqa_api/exceptions'
+require 'easyqa_api/item'
+require 'easyqa_api/items/user'

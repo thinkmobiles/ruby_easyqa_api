@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'easyqa_api/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "easyqa_api"
+  spec.name          = 'easyqa_api'
   spec.version       = EasyqaApi::VERSION
-  spec.authors       = ["Olexandr Hoshylyk"]
-  spec.email         = ["gashuk95@gmail.com"]
+  spec.authors       = ['Thinkmobiles']
+  spec.email         = ['gashuk95@gmail.com']
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q(API to EasyQA)
+  spec.description   = %q(Simple gem for EasyQA API)
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -25,11 +25,13 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
-  spec.bindir        = "exe"
+  spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
-  spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency 'bundler', '~> 1.13'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'faraday', '~> 0.9.2'
+  spec.add_development_dependency 'faraday_middleware', '~> 0.10.0'
 end
