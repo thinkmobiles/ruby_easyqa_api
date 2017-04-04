@@ -6,7 +6,9 @@ module EasyqaApi
       METHODS.each do |method_name|
         define_singleton_method method_name do |*attrs|
           instance = new
-          instance.install_variables! instance.send(method_name, *attrs)
+          instance.install_variables!(
+            instance.send(method_name, *attrs).merge(attrs.find { |attr| attr.is_a? Hash } || {})
+          )
           instance
         end if method_permitted?(options, method_name)
       end
