@@ -8,11 +8,15 @@ module EasyqaApi
   class RequestError < StandardError
   end
 
+  class ValidationError < StandardError
+  end
+
   class Exception
     EXCEPTIONS = {
       404 => EasyqaApi::NotFoundError,
       403 => EasyqaApi::PermissionError,
-      400 => EasyqaApi::RequestError
+      400 => EasyqaApi::RequestError,
+      422 => EasyqaApi::ValidationError
     }.freeze
 
     def self.check_response_status!(response)
