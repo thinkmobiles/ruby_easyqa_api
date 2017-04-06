@@ -4,19 +4,38 @@ module EasyqaApi
   class Item
     extend ClassMethodsSettable
 
-    @connection = Faraday.new(url: EasyqaApi.configuration.url) do |faraday|
-      faraday.request :json
-      faraday.response :json
-      faraday.adapter Faraday.default_adapter
-    end
+    CONNECTION = {
+      json: {
+        instance: -> { json_connection },
+        content_type: 'application/json'
+      },
+      multipart: {
+        instance: -> { multipart_connection },
+        content_type: 'multipart/form-data'
+      }
+    }.freeze
 
     class << self
-      attr_accessor :connection
+      def json_connection
+        @json_connection ||= Faraday.new(url: EasyqaApi.configuration.url) do |faraday|
+          faraday.request :json
+          faraday.response :json
+          faraday.adapter Faraday.default_adapter
+        end
+      end
 
-      def send_request(url, html_method, &block)
-        response = EasyqaApi::Item.connection.send(html_method) do |req|
+      def multipart_connection
+        @multipart_connection ||= Faraday.new(url: EasyqaApi.configuration.url) do |faraday|
+          faraday.request :multipart
+          faraday.response :json
+          faraday.adapter Faraday.default_adapter
+        end
+      end
+
+      def send_request(url, html_method, type = :json, &block)
+        response = EasyqaApi::Item::CONNECTION[type][:instance].call.send(html_method) do |req|
           req.url EasyqaApi.configuration.api_path + url
-          req.headers['Content-Type'] = 'application/json'
+          req.headers['Content-Type'] = EasyqaApi::Item::CONNECTION[type][:content_type]
           yield(req) if block
         end
 
