@@ -8,7 +8,7 @@ module EasyqaApi
       end
     end
 
-    @url = 'http://localhost:3000/'
+    @url = 'https://app.geteasyqa.com/'
     @api_version = 1
   end
 
