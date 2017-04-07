@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q(API to EasyQA)
   spec.description   = %q(Simple gem for EasyQA API)
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = 'https://app.geteasyqa.com/'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
