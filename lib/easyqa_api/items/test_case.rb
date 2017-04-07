@@ -4,11 +4,11 @@ module EasyqaApi
 
     install_class_methods!
 
-    def self.all(project_token, module_id, user = @@default_user)
-      send_request("test_modules/#{module_id}/test_cases", :get) do |req|
+    def self.all(attrs, user = @@default_user)
+      send_request("#{attrs[:parent_name]}/#{attrs[:parent_id]}/test_cases", :get) do |req|
         req.params = {
           auth_token: user.auth_token,
-          token: project_token
+          token: attrs[:project_token]
         }
       end
     end
