@@ -20,7 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Link to documentation
+http://www.rubydoc.info/gems/easyqa_api/0.0.3/
 
 ## Development
 
