@@ -4,7 +4,6 @@
 #     * :project_token (String) [@project_token] Project token on EasyQA
 #     * :title (String) test run title on EasyQA website
 #     * :assigner_id (Fixnum) test run assigner id on EasyQA website
-#     * :test_plan_id (Fixnum) test plan id on EasyQA website
 #     * :description (String) test run description on EasyQA website
 #     * :test_run_result_attributes (Array<Hash>) attributes of test run results.
 #       * :test_plan_id (Fixnum) id of test plan
