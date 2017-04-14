@@ -14,7 +14,7 @@ module EasyqaApi
       end
     end
 
-    @url = 'https://app.geteasyqa.com/'
+    @url = 'https://app.geteasyqa.com'
     @api_version = 1
   end
 

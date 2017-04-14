@@ -1,0 +1,31 @@
+user:
+  attrs:
+    email: &user_email test@mail.com
+    password: &user_password '1234567890'
+    auth_token: &user_token 0EcWZ4zU0lElpKH5WXDhe5iXwBzd4tX3m27YOuMZu-BT9Z_UkGuFmmzHIzedTEHB
+    name: &user_name Test User
+  webmock:
+    sign_in:
+      success:
+        request:
+          body:
+            user:
+              email: *user_email
+              password: *user_password
+        response:
+          body:
+            auth_token: *user_token
+            name: *user_name
+      error:
+        response:
+          body:
+            message: 'Invalid email or password'
+          status: 404
+    sign_out:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            message: Success
