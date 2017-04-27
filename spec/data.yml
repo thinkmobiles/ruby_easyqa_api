@@ -69,11 +69,27 @@ organization:
         response:
           body:
             <<: *organization_attrs
-      error: &organization_create_error
+      error: &organization_create_error_attrs
         response:
           body:
             message: User not found
           status: 404
     update:
       <<: *organization_create_attrs
-
+    show:
+      success:
+        response:
+          body:
+            <<: *organization_attrs
+      error:
+        <<: *organization_create_error_attrs
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *organization_attrs
+      error:
+        <<: *organization_create_error_attrs

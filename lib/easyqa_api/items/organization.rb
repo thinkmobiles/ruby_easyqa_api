@@ -67,7 +67,7 @@ module EasyqaApi
     # @!macro organization_without_attrs
     def delete(id = @id, user = @@default_user)
       @attributes = send_request("organizations/#{id}", :delete) do |req|
-        req.params = {
+        req.body = {
           auth_token: user.auth_token
         }
       end
