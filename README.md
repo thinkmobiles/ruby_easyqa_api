@@ -19,6 +19,25 @@ Or install it yourself as:
     $ gem install easyqa_api
 
 ## Usage
+Login user on EasyQA 
+```ruby
+user = EasyqaApi::User.new(email: 'test@gmail.com', password: '1234567890')
+```
+
+And now you can do any action with easyqa_api. For example:
+```ruby
+organization = EasyqaApi::Organization.create({ title: 'Test', description: 'Test' }, user)
+```
+
+If you do not want to always point of the user during any action in easyqa_api - set it as default 
+```ruby
+user.set_default!
+```
+
+And now:
+```ruby
+organization = EasyqaApi::Organization.create(title: 'Test', description: 'Test')
+```
 
 Link to documentation
 http://www.rubydoc.info/gems/easyqa_api/0.0.3/
