@@ -31,7 +31,7 @@ user:
             message: Success
 organization:
   attrs: &organization_attrs
-    id: 4
+    id: &organization_id 1
     title: &organization_title Test Organization
     description: &organization_description Test Description
     deleted_at: null
@@ -58,7 +58,7 @@ organization:
           body:
             message: 'User not found'
           status: 404
-    create:
+    create: &organization_create_attrs
       success:
         request:
           body:
@@ -69,9 +69,11 @@ organization:
         response:
           body:
             <<: *organization_attrs
-      error:
+      error: &organization_create_error
         response:
           body:
             message: User not found
           status: 404
+    update:
+      <<: *organization_create_attrs
 

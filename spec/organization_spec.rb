@@ -11,6 +11,10 @@ describe EasyqaApi::Organization do
                      description: DATA['organization']['attrs']['description']
                    }],
                    show: [],
-                   update: [],
+                   update: [{
+                     title: DATA['organization']['attrs']['title'],
+                     description: DATA['organization']['attrs']['description'],
+                     id: DATA['organization']['attrs']['id']
+                   }],
                    delete: []
 end

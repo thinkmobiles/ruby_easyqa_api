@@ -5,3 +5,4 @@ gemspec
 
 gem 'pry'
 gem 'simplecov'
+gem 'webmock', path: '/media/warrior109/DATA/Programming/forks/webmock'
