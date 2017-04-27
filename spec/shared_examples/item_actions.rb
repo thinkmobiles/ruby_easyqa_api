@@ -8,7 +8,7 @@ shared_examples 'item actions' do |described_class, attributes|
       end
 
       it 'with logined user must be ok' do
-        items = described_class.all(@current_user)
+        items = described_class.all(*method_attrs[:all])
         expect(items).to be_instance_of(Array)
       end
     end

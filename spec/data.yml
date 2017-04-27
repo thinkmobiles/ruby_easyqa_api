@@ -1,3 +1,10 @@
+not_found_user_error: &not_found_user_error
+  error:
+    response:
+      body:
+        message: &user_not_found_message User not found
+      status: 404
+
 user:
   attrs:
     id: &user_id 1
@@ -55,11 +62,7 @@ organization:
               title: Organization5
               description: Organization5 - the best company in the world.
               slug: Organization5
-      error:
-        response:
-          body:
-            message: &user_not_found_message User not found
-          status: 404
+      <<: *not_found_user_error
     create: &organization_create_attrs
       success:
         request:
@@ -71,11 +74,7 @@ organization:
         response:
           body:
             <<: *organization_attrs
-      error: &organization_create_error_attrs
-        response:
-          body:
-            message: *user_not_found_message
-          status: 404
+      <<: *not_found_user_error
     update:
       <<: *organization_create_attrs
     show:
@@ -83,8 +82,7 @@ organization:
         response:
           body:
             <<: *organization_attrs
-      error:
-        <<: *organization_create_error_attrs
+      <<: *not_found_user_error
     delete:
       success:
         request:
@@ -93,8 +91,7 @@ organization:
         response:
           body:
             <<: *organization_attrs
-      error:
-        <<: *organization_create_error_attrs
+      <<: *not_found_user_error
 
 project:
   attrs: &project_attrs
@@ -105,7 +102,7 @@ project:
     deleted_at: null
     created_at: "2017-04-14T07:55:37.970Z"
     updated_at: "2017-04-14T07:55:37.970Z"
-    token: tk2dlGvuzNuMCQS1E1FfviKWAVaKYGEl
+    token: &project_token tk2dlGvuzNuMCQS1E1FfviKWAVaKYGEl
     slug: Organization1_Test_project
   webmock:
     all:
@@ -120,11 +117,7 @@ project:
               token: tk2dlGsuzNzMClS123FfviKWAValaska
               title: Project 2
               slug: Organization1_Project_2
-      error:
-        response:
-          body:
-            message: *user_not_found_message
-          status: 404
+      <<: *not_found_user_error
     create: &project_create_attrs
       success:
         request:
@@ -136,11 +129,7 @@ project:
         response:
           body:
             <<: *project_attrs
-      error: &project_create_error_attrs
-        response:
-          body:
-            message: *user_not_found_message
-          status: 404
+      <<: *not_found_user_error
     update:
       success:
         request:
@@ -151,15 +140,13 @@ project:
         response:
           body:
             <<: *project_attrs
-      error:
-        <<: *project_create_error_attrs
+      <<: *not_found_user_error
     show:
       success:
         response:
           body:
             <<: *project_attrs
-      error:
-        <<: *project_create_error_attrs
+      <<: *not_found_user_error
     delete:
       success:
         request:
@@ -168,5 +155,52 @@ project:
         response:
           body:
             <<: *project_attrs
-      error:
-        <<: *project_create_error_attrs
+      <<: *not_found_user_error
+
+status:
+  attrs: &status_attrs
+    id: 1
+    name: &status_name connecting
+    created_at: "2017-04-14T07:55:50.907Z"
+    updated_at: "2017-04-14T07:55:50.907Z"
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *status_attrs
+            -
+              <<: *status_attrs
+              id: 2
+              name: Submiting
+      <<: *not_found_user_error
+    create: &status_create_attrs
+      success:
+        request:
+          body:
+            token: *project_token
+            status_object: &status_create_body
+              name: *status_name
+            auth_token: *user_token
+        response:
+          body:
+            <<: *status_attrs
+      <<: *not_found_user_error
+    update:
+      <<: *status_create_attrs
+    show:
+      success:
+        response:
+          body:
+            <<: *status_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *status_attrs
+      <<: *not_found_user_error
