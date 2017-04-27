@@ -21,7 +21,7 @@ DATA = YAML.load_file('spec/data.yml').freeze
 
 def action_stub_with_body(object_name, action_name, http_method, stubbing_url)
   stub_request(http_method, "#{BASE_URL}#{stubbing_url}")
-    .with(body: DATA[object_name.to_s]['webmock'][action_name.to_s]['success']['request']['body'].to_json)
+    .with(body: hash_including(DATA[object_name.to_s]['webmock'][action_name.to_s]['success']['request']['body']))
     .to_return(body: DATA[object_name.to_s]['webmock'][action_name.to_s]['success']['response']['body'].to_json)
 
   stub_request(http_method, "#{BASE_URL}#{stubbing_url}").with do |req|

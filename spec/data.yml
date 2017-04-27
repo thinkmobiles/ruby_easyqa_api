@@ -1,5 +1,6 @@
 user:
   attrs:
+    id: &user_id 1
     email: &user_email test@mail.com
     password: &user_password '1234567890'
     auth_token: &user_token 0EcWZ4zU0lElpKH5WXDhe5iXwBzd4tX3m27YOuMZu-BT9Z_UkGuFmmzHIzedTEHB
@@ -29,6 +30,7 @@ user:
         response:
           body:
             message: Success
+
 organization:
   attrs: &organization_attrs
     id: &organization_id 1
@@ -56,7 +58,7 @@ organization:
       error:
         response:
           body:
-            message: 'User not found'
+            message: &user_not_found_message User not found
           status: 404
     create: &organization_create_attrs
       success:
@@ -72,7 +74,7 @@ organization:
       error: &organization_create_error_attrs
         response:
           body:
-            message: User not found
+            message: *user_not_found_message
           status: 404
     update:
       <<: *organization_create_attrs
@@ -93,3 +95,78 @@ organization:
             <<: *organization_attrs
       error:
         <<: *organization_create_error_attrs
+
+project:
+  attrs: &project_attrs
+    id: 1
+    title: &project_title Test project
+    user_id: *user_id
+    organization_id: *organization_id
+    deleted_at: null
+    created_at: "2017-04-14T07:55:37.970Z"
+    updated_at: "2017-04-14T07:55:37.970Z"
+    token: tk2dlGvuzNuMCQS1E1FfviKWAVaKYGEl
+    slug: Organization1_Test_project
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *project_attrs
+            -
+              <<: *project_attrs
+              id: 2
+              token: tk2dlGsuzNzMClS123FfviKWAValaska
+              title: Project 2
+              slug: Organization1_Project_2
+      error:
+        response:
+          body:
+            message: *user_not_found_message
+          status: 404
+    create: &project_create_attrs
+      success:
+        request:
+          body:
+            organization_id: *organization_id
+            project: &project_create_body
+              title: *project_title
+            auth_token: *user_token
+        response:
+          body:
+            <<: *project_attrs
+      error: &project_create_error_attrs
+        response:
+          body:
+            message: *user_not_found_message
+          status: 404
+    update:
+      success:
+        request:
+          body:
+            project:
+              title: *project_title
+            auth_token: *user_token
+        response:
+          body:
+            <<: *project_attrs
+      error:
+        <<: *project_create_error_attrs
+    show:
+      success:
+        response:
+          body:
+            <<: *project_attrs
+      error:
+        <<: *project_create_error_attrs
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *project_attrs
+      error:
+        <<: *project_create_error_attrs
