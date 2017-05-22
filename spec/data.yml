@@ -321,11 +321,70 @@ issue:
           body:
             <<: *issue_attrs
       <<: *not_found_user_error
+
+test_module:
+  attrs: &test_module_attrs
+    id: &test_module_id 1
+    test_plan_id: 1
+    created_by: *user_id
+    title:  &test_module_title Sullust
+    description: Always pass on what you have learned.
+    parent_id: null
+    lft: 1
+    rgt: 1
+    depth: 0
+    children_count: null
+    created_at: "2017-04-14T07:56:14.456Z"
+    updated_at: "2017-04-14T07:56:14.456Z"
+    position: 0
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *test_module_attrs
+            -
+              <<: *test_module_attrs
+              id: 2
+              title: Random
+              position: 1
+      <<: *not_found_user_error
+    create: &test_module_create_attrs
+      success:
+        request:
+          body:
+            token: *project_token
+            auth_token: *user_token
+            test_module:
+              title: *test_module_title
+        response:
+          body:
+            <<: *test_module_attrs
+      <<: *not_found_user_error
+    update:
+      <<: *test_module_create_attrs
+    show:
+      success:
+        response:
+          body:
+            <<: *test_module_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *test_module_attrs
+      <<: *not_found_user_error
+
 test_case:
   attrs: &test_case_attrs
     id: &test_case_id 1
     test_plan_id: 1
-    module_id: 1
+    module_id: *test_module_id
     updated_by: null
     title: &test_case_title Hoags Object
     case_type: boundary

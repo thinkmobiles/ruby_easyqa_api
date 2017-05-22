@@ -69,7 +69,7 @@ module EasyqaApi
       attrs = { id: @id, project_token: @project_token }.merge(attrs)
       @attributes = send_request("test_modules/#{attrs[:id]}", :put) do |req|
         req.body = {
-          test_module: attrs.except(:project_token),
+          test_module: attrs.except(:project_token, :id),
           token: attrs[:project_token],
           auth_token: user.auth_token
         }
@@ -80,7 +80,7 @@ module EasyqaApi
     # @!macro test_module_without_attrs
     def delete(project_token = @project_token, id = @id, user = @@default_user)
       @attributes = send_request("test_modules/#{id}", :delete) do |req|
-        req.params = {
+        req.body = {
           token: project_token,
           auth_token: user.auth_token
         }
