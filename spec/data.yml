@@ -321,3 +321,61 @@ issue:
           body:
             <<: *issue_attrs
       <<: *not_found_user_error
+test_case:
+  attrs: &test_case_attrs
+    id: &test_case_id 1
+    test_plan_id: 1
+    module_id: 1
+    updated_by: null
+    title: &test_case_title Hoags Object
+    case_type: boundary
+    pre_steps: "1. Find Count Dooku \n 2. Give him Hutt"
+    steps: "1. Sit in a Flash Speeder\n 2. Go to Utapau"
+    expected_result: droid 'R2-Q5' say 'Shut him up or shut him down.'
+    created_at: "2017-04-14T07:56:08.439Z"
+    updated_at: "2017-04-14T07:56:08.439Z"
+    created_by: *user_id
+    id_in_project: 1
+    position: 0
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *test_case_attrs
+            -
+              <<: *test_case_attrs
+              id: 2
+              title: Random
+              position: 1
+      <<: *not_found_user_error
+    create: &test_case_create_attrs
+      success:
+        request:
+          body:
+            token: *project_token
+            auth_token: *user_token
+            test_case:
+              title: *test_case_title
+        response:
+          body:
+            <<: *test_case_attrs
+      <<: *not_found_user_error
+    update:
+      <<: *test_case_create_attrs
+    show:
+      success:
+        response:
+          body:
+            <<: *test_case_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *test_case_attrs
+      <<: *not_found_user_error
