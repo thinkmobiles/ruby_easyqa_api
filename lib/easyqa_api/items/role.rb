@@ -37,10 +37,12 @@ module EasyqaApi
     # @option attrs [Fixnum] :user_id user id on EasyQA website.
     # @option attrs [String] :project_token Project token on EasyQA. Add this option if you want create project role
     def create(attrs, user = @@default_user)
-      @attributes = send_request("organizations/#{attrs[:organization_id]}/roles", :post) do |req|
+      @attributes = send_request(
+        "organizations/#{attrs[:organization_id] || attrs['organization_id']}/roles", :post
+      ) do |req|
         req.body = {
           auth_token: user.auth_token
-        }.merge(attrs.except(:organization_id))
+        }.merge(attrs.except(:organization_id, 'organization_id'))
       end
     end
 
@@ -70,7 +72,7 @@ module EasyqaApi
     # @macro role_without_attrs
     def delete(id = @id, user = @@default_user)
       @attributes = send_request("roles/#{id}", :delete) do |req|
-        req.params = {
+        req.body = {
           auth_token: user.auth_token
         }
       end

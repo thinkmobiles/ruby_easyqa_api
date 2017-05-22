@@ -204,3 +204,61 @@ status:
           body:
             <<: *status_attrs
       <<: *not_found_user_error
+role:
+  attrs: &role_attrs
+    id: 1
+    organization_id: 1
+    project_id: 1
+    user_id: 1
+    role: &role_owner owner
+    created_at: "2017-04-14T07:55:50.907Z"
+    updated_at: "2017-04-14T07:55:50.907Z"
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *role_attrs
+            -
+              <<: *role_attrs
+              id: 2
+              user_id: 2
+              role: developer
+      <<: *not_found_user_error
+    create: &role_create_attrs
+      success:
+        request:
+          body:
+            role: tester
+            user_id: 3
+            auth_token: *user_token
+        response: &role_response
+          body:
+            <<: *role_attrs
+            role: tester
+            user_id: 3
+      <<: *not_found_user_error
+    update:
+      success:
+        request:
+          body:
+            role: *role_owner
+            auth_token: *user_token
+        response: *role_response
+      <<: *not_found_user_error
+    show:
+      success:
+        response:
+          body:
+            <<: *role_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *role_attrs
+      <<: *not_found_user_error
