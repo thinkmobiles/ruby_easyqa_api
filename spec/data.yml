@@ -543,6 +543,7 @@ test_run:
           body:
             <<: *test_run_attrs
       <<: *not_found_user_error
+
 issue_attachment:
   attrs: &issue_attachment_attrs
     id: &issue_attachment_id 1
@@ -574,4 +575,63 @@ issue_attachment:
         response:
           body:
             <<: *issue_attachment_attrs
+      <<: *not_found_user_error
+
+test_object:
+  attrs: &test_object_attrs
+    id: &test_object_id 9
+    file_file_name: null
+    file_content_type: null
+    file_file_size: null
+    file_updated_at: null
+    project_id: *project_id
+    user_id: *user_id
+    created_at: "2017-04-14T07:56:04.136Z"
+    updated_at: "2017-04-14T07:56:04.136Z"
+    link: &test_object_link http://glover.org
+    platform_version: null
+    package: null
+    min_sdk_version: null
+    sdk_version: null
+    identeficator: null
+    deleted_at: null
+    url: http://glover.org
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *test_object_attrs
+            -
+              <<: *test_object_attrs
+              id: 2
+              link: http://stokes.com
+              url: http://stokes.com
+      <<: *not_found_user_error
+    create: &test_object_create_attrs
+      success:
+        request:
+          body:
+            token: *project_token
+            auth_token: *user_token
+            link: *test_object_link
+        response:
+          body:
+            <<: *test_object_attrs
+      <<: *not_found_user_error
+    show:
+      success:
+        response:
+          body:
+            <<: *test_object_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *test_object_attrs
       <<: *not_found_user_error
