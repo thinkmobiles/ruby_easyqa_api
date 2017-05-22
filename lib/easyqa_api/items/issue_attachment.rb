@@ -21,7 +21,7 @@ module EasyqaApi
         req.body = {
           token: attrs[:project_token],
           auth_token: user.auth_token
-        }.merge(attrs.except(:project_token))
+        }.merge(attrs.except(:project_token, :issue_id))
       end
     end
 
@@ -30,7 +30,7 @@ module EasyqaApi
     def delete(attrs = {}, user = @@default_user)
       attrs = { id: @id, project_token: @project_token }.merge(attrs)
       @attributes = send_request("attachments/#{attrs[:id]}", :delete) do |req|
-        req.params = {
+        req.body = {
           token: attrs[:project_token],
           auth_token: user.auth_token
         }

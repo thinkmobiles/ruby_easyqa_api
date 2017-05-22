@@ -264,7 +264,7 @@ role:
       <<: *not_found_user_error
 issue:
   attrs: &issue_attrs
-    id: 1
+    id: &issue_id 1
     summary: &issue_summary consequatur
     description: Et est exercitationem dolore tenetur.
     project_id: *project_id
@@ -542,4 +542,36 @@ test_run:
         response:
           body:
             <<: *test_run_attrs
+      <<: *not_found_user_error
+issue_attachment:
+  attrs: &issue_attachment_attrs
+    id: &issue_attachment_id 1
+    created_at: "2017-04-14T07:54:48.722Z"
+    updated_at: "2017-04-14T07:54:48.722Z"
+    file_file_name: test.jpg
+    file_content_type: image/jpeg
+    file_file_size: 119260
+    file_updated_at: "2017-04-14T07:54:48.449Z"
+    attachable_type: Issue
+    attachable_id: *issue_id
+    url: /system/attachments/files/7cd3c116587d776594d7046ee3b37874d2edfc9c/7cd3c116587d776594d7046ee3b37874d2edfc9c/54d0df5d0e363826c7ed84444a06bacf7f20a337/original/test.jpg
+  webmock:
+    create:
+      success:
+        request:
+          body:
+            token: *project_token
+            auth_token: *user_token
+        response:
+          body:
+            <<: *issue_attachment_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *issue_attachment_attrs
       <<: *not_found_user_error
