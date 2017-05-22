@@ -81,7 +81,7 @@ module EasyqaApi
     # @!macro test_run_without_attrs
     def delete(project_token = @project_token, id = @id, user = @@default_user)
       @attributes = send_request("test_runs/#{id}", :delete) do |req|
-        req.params = {
+        req.body = {
           token: project_token,
           auth_token: user.auth_token
         }
