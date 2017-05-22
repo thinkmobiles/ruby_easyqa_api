@@ -53,8 +53,7 @@ module EasyqaApi
         req.body = {
           token: attrs[:project_token],
           auth_token: user.auth_token
-        }.merge(attrs.except(:project_token, :attachments))
-         .merge(retrieve_attachments(attrs[:attachments]))
+        }.merge(attrs.except(:project_token, :attachments)).merge(retrieve_attachments(attrs[:attachments] || []))
       end
     end
 
@@ -63,7 +62,7 @@ module EasyqaApi
     def show(attrs = {}, user = @@default_user)
       attrs = { id: @id, project_token: @project_token }.merge(attrs)
       attrs[:id] = "pid#{attrs.delete(:id_in_project)}" if attrs[:id_in_project]
-      @attributes = send_request("issues/#{id}", :get) do |req|
+      @attributes = send_request("issues/#{attrs[:id]}", :get) do |req|
         req.params = {
           token: attrs[:project_token],
           auth_token: user.auth_token
@@ -92,7 +91,7 @@ module EasyqaApi
       attrs = { id: @id, project_token: @project_token }.merge(attrs)
       attrs[:id] = "pid#{attrs.delete(:id_in_project)}" if attrs[:id_in_project]
       @attributes = send_request("issues/#{attrs[:id]}", :delete) do |req|
-        req.params = {
+        req.body = {
           token: attrs[:project_token],
           auth_token: user.auth_token
         }

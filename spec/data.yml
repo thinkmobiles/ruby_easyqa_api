@@ -95,7 +95,7 @@ organization:
 
 project:
   attrs: &project_attrs
-    id: 1
+    id: &project_id 1
     title: &project_title Test project
     user_id: *user_id
     organization_id: *organization_id
@@ -159,7 +159,7 @@ project:
 
 status:
   attrs: &status_attrs
-    id: 1
+    id: &status_id 1
     name: &status_name connecting
     created_at: "2017-04-14T07:55:50.907Z"
     updated_at: "2017-04-14T07:55:50.907Z"
@@ -261,4 +261,63 @@ role:
         response:
           body:
             <<: *role_attrs
+      <<: *not_found_user_error
+issue:
+  attrs: &issue_attrs
+    id: 1
+    summary: &issue_summary consequatur
+    description: Et est exercitationem dolore tenetur.
+    project_id: *project_id
+    issue_type: feature
+    priority: medium
+    status_id: *status_id
+    reporter_id: *user_id
+    assigner_id: null
+    created_at: "2017-04-14T07:54:54.039Z"
+    updated_at: "2017-04-14T07:54:54.039Z"
+    project_issue_number: 1
+    test_object_id: null
+    log_file_id: null
+    spent_time: "1970-01-01T00:00:00.000Z"
+    deleted_at: null
+    crash_id: null
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *issue_attrs
+            -
+              <<: *issue_attrs
+              id: 2
+              summary: Submit
+      <<: *not_found_user_error
+    create: &issue_create_attrs
+      success:
+        request:
+          body:
+            token: *project_token
+            summary: *issue_summary
+            auth_token: *user_token
+        response:
+          body:
+            <<: *issue_attrs
+      <<: *not_found_user_error
+    update:
+      <<: *issue_create_attrs
+    show:
+      success:
+        response:
+          body:
+            <<: *issue_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *issue_attrs
       <<: *not_found_user_error
