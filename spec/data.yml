@@ -635,3 +635,53 @@ test_object:
           body:
             <<: *test_object_attrs
       <<: *not_found_user_error
+
+test_run_result:
+  attrs: &test_run_result_attrs
+    id: &test_run_result_id 1
+    test_run_id: *test_run_id
+    test_case_id: *test_case_id
+    status: &test_run_result_status untested
+    passed_by: null
+    created_at: "2017-04-14T07:56:27.800Z"
+    updated_at: "2017-04-14T07:56:27.800Z"
+    position: 0
+  webmock:
+    all:
+      success:
+        response:
+          body:
+            -
+              <<: *test_run_result_attrs
+            -
+              <<: *test_run_result_attrs
+              id: 2
+              position: 1
+      <<: *not_found_user_error
+    update:
+      success:
+        request:
+          body:
+            token: *project_token
+            auth_token: *user_token
+            test_run_result:
+              result_status: *test_run_result_status
+        response:
+          body:
+            <<: *test_run_result_attrs
+      <<: *not_found_user_error
+    show:
+      success:
+        response:
+          body:
+            <<: *test_run_result_attrs
+      <<: *not_found_user_error
+    delete:
+      success:
+        request:
+          body:
+            auth_token: *user_token
+        response:
+          body:
+            <<: *test_run_result_attrs
+      <<: *not_found_user_error
